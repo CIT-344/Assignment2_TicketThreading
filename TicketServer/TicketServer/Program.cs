@@ -193,12 +193,12 @@ namespace TicketServer
         /// <summary>
         /// Unique identifer for the ticket 
         /// </summary>
-        public readonly int TicketID;
+        public int TicketID { get; set; }
 
         /// <summary>
         /// Event name this ticket represents
         /// </summary>
-        public readonly String EventName;
+        public String EventName { get; set; }
 
         public Ticket(String EventName, int ID)
         {
