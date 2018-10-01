@@ -16,16 +16,41 @@ namespace FinalAssignment
 {
     class Program
     {
+        // Safe way of q-ing tickets
         static ConcurrentQueue<Ticket> _TicketStorage = new ConcurrentQueue<Ticket>();
+        // Safe way of storing tickets->user relations
         static ConcurrentDictionary<Ticket, float> Sales = new ConcurrentDictionary<Ticket, float>();
+        // Server Socket
         static TcpListener ServerListener = new TcpListener(IPAddress.Any, 11000);
-        const int MaxListeners = 1; // Try the extreme mode (20+ Listeners, Max Tickets-int.MaxValue Max Attempts-float.MinValue)
+        /// <summary>
+        /// Determines how many threads will be doing listening and socket connection
+        /// </summary>
+        const int MaxListeners = 1; // Try the extreme mode by playing with this variable, the max tickets, and the max attempts (Hint: You get some really long crunch time followed by heavy laptop fan usage)
+
+        /// <summary>
+        /// Relates to the MaxListeners this allows many threads to be q-ed and killed if needed
+        /// </summary>
         static List<Task> ListenerThreads = new List<Task>();
 
+        /// <summary>
+        /// Sets how many tickets a user can buy
+        /// </summary>
         static int MaxDupPurchases = 2;
+        
+        /// <summary>
+        /// Random generator for the price calculations
+        /// </summary>
         static Random priceRandomGenerator = new Random();
 
+
+        /// <summary>
+        /// The source of the cancel request for listener threads
+        /// </summary>
         static CancellationTokenSource CancelSource = new CancellationTokenSource();
+
+        /// <summary>
+        /// The object (token) that connects a thread's death back to the source 
+        /// </summary>
         static CancellationToken CancelRequestToken
         {
             get
