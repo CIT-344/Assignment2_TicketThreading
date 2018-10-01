@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketServer", "TicketServer\TicketServer.csproj", "{D5C0F710-74F4-4BB5-A45D-F56C6C5BEAA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketRequestingClient", "TicketRequestingClient\TicketRequestingClient.csproj", "{3999BFAC-C3E9-46EC-8ED4-355505FFD0FE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinalAssignment", "FinalAssignment\FinalAssignment.csproj", "{9DA35D1D-B457-4E37-BB7B-83C1CAF6D985}"
 EndProject
 Global
@@ -15,14 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D5C0F710-74F4-4BB5-A45D-F56C6C5BEAA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5C0F710-74F4-4BB5-A45D-F56C6C5BEAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5C0F710-74F4-4BB5-A45D-F56C6C5BEAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5C0F710-74F4-4BB5-A45D-F56C6C5BEAA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3999BFAC-C3E9-46EC-8ED4-355505FFD0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3999BFAC-C3E9-46EC-8ED4-355505FFD0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3999BFAC-C3E9-46EC-8ED4-355505FFD0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3999BFAC-C3E9-46EC-8ED4-355505FFD0FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DA35D1D-B457-4E37-BB7B-83C1CAF6D985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DA35D1D-B457-4E37-BB7B-83C1CAF6D985}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DA35D1D-B457-4E37-BB7B-83C1CAF6D985}.Release|Any CPU.ActiveCfg = Release|Any CPU
