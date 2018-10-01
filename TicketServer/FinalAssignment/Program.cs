@@ -42,6 +42,7 @@ namespace FinalAssignment
         /// </summary>
         static Random priceRandomGenerator = new Random();
 
+        static float MaxBuyers = 0;
 
         /// <summary>
         /// The source of the cancel request for listener threads
@@ -136,17 +137,45 @@ namespace FinalAssignment
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Maybe some extra credit
+        /// I really love System.Linq that C# offers to run SQL like queries against data sets
+        /// </summary>
+        /// <param name="SalesData">The dictionary of ticket sales</param>
         static void PrintSalesReport(ConcurrentDictionary<Ticket, float> SalesData)
         {
-            // Money Formatting -- https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-currency-c-format-specifier
-            var grps = SalesData.GroupBy(x=>x.Value);
-            foreach (var grpSale in grps.OrderByDescending(x=>x.Select(y => y.Key.TicketPrice).Sum()))
+            // Not sure how I feel about this but I need to re-generate all the potential users
+            var allPeople = new List<float>();
+
+            for (float i = 0; i < MaxBuyers; i++)
             {
-                Console.WriteLine($"User {grpSale.Key} purchased {grpSale.Count()} tickets for a total of {grpSale.Select(x=>x.Key.TicketPrice).Sum().ToString("C", CultureInfo.CurrentCulture)}");
+                allPeople.Add(i);
             }
 
+            // Then match that against who managed to purchase a ticket and that leaves the ID's of what thread didn't get any tickets
+            var notFound = allPeople.Where(x => !SalesData.Select(y => y.Value).Contains(x));
+
+            // List those users
+            foreach (var notFoundUser in notFound)
+            {
+                Console.WriteLine($"User {notFoundUser} didn't manage to purchase any tickets");
+            }
+
+            // If I re-did this code I'd setup some rule that everyone must at least have one ticket before
+            // Users can double up
+            
+
+            // Money Formatting -- https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-currency-c-format-specifier
+            var grps = SalesData.GroupBy(x=>x.Value); // Get all the tickets sales and group them by the user id
+            foreach (var grpSale in grps.OrderByDescending(x=>x.Select(y => y.Key.TicketPrice).Sum())) // Order by the highest combined price
+            {// For each user id returned by that grouping display information about the sale(s)
+                Console.WriteLine($"User {grpSale.Key} purchased {grpSale.Count()}({String.Join(",", grpSale.Select(x => x.Key.TicketID))}) tickets for a total of {grpSale.Select(x=>x.Key.TicketPrice).Sum().ToString("C", CultureInfo.CurrentCulture)}");
+            }
+
+            
             var totalTickets = SalesData.Select(x => x.Key).LongCount();
 
+            // Placeholder query to get all the pricing data
             var ticketPricingQuery = SalesData.Select(x => x.Key.TicketPrice);
 
             var earliestValue = SalesData.OrderBy(x=>x.Key.SaleStart).Select(x=>x.Key.SaleStart).First();
@@ -168,8 +197,9 @@ Time to Sell={latestValue.Subtract(earliestValue).TotalSeconds} (seconds)
             // Asks how many purchases attempts (number of buyers to create)
             Console.Write("\nEnter number of tickets to attempt to purchase (Default: 600): ");
             var attemptNumberTry = float.TryParse(Console.ReadLine(), out float attemptAmount);
-            
-            for (float i = 0; i < (attemptNumberTry ? attemptAmount : 600); i++)
+            MaxBuyers = (attemptNumberTry ? attemptAmount : 600);
+
+            for (float i = 0; i < MaxBuyers; i++)
             {
                 // Fires all the clients off onto the thread pool to begin attempting to purchase 
                 ThreadPool.QueueUserWorkItem(DoClientWorker, new
@@ -187,7 +217,7 @@ Time to Sell={latestValue.Subtract(earliestValue).TotalSeconds} (seconds)
             int purchases = 0;
             // Cheap way of saying are tickets still available for purchase
             // Also follows the max purchase rule
-            while (_TicketStorage.Count != 0 && (purchases < MaxDupPurchases))
+            while (purchases < MaxDupPurchases)
             {
                 var client = new TcpClient();
                 try
