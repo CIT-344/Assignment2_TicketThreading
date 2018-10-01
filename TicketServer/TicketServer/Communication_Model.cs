@@ -6,9 +6,9 @@ namespace TicketServer
     {
         public readonly String EventName;
         public readonly DateTime DateReceived;
-        public readonly Object Body;
+        public readonly Ticket Body;
 
-        public Communication_Model(String EventName, Object Body)
+        public Communication_Model(String EventName, Ticket Body)
         {
             this.EventName = EventName;
             this.DateReceived = DateTime.Now;

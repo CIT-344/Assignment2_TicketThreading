@@ -15,9 +15,9 @@ namespace TicketServer.Extensions
 
         public static Communication_Model ReadDataModel(this BinaryReader Reader)
         {
-            var rawData = Reader.ReadString();
             try
             {
+                var rawData = Reader.ReadString();
                 var model = JsonConvert.DeserializeObject<Communication_Model>(rawData);
                 return model;
             }
